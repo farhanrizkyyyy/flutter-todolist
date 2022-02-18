@@ -1,14 +1,28 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist/components/main_appbar.dart';
 import 'package:todolist/configs/palette.config.dart';
+import 'package:todolist/modules/category/presentation/provider/categories_provider.dart';
 import 'package:todolist/modules/home/components/task_category_card.dart';
+import 'package:todolist/utils/enums.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   static const String path = '/home';
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    Future.microtask(() => context.read<CategoriesProvider>().getCategories());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,37 +55,43 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildBody() {
-    return Column(
-      children: [
-        _buildTopSection(),
-        Expanded(
-          child: GridView.count(
-            padding: EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 16,
+    return Consumer<CategoriesProvider>(
+        builder: (context, categoriesProvider, _) {
+      if (categoriesProvider.stateIs == StateIs.loading) {
+        return Center(child: CircularProgressIndicator());
+      }
+      return Column(
+        children: [
+          _buildTopSection(),
+          Expanded(
+            child: GridView.count(
+              padding: EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 16,
+              ),
+              childAspectRatio: 1 / .8,
+              crossAxisCount: 2,
+              mainAxisSpacing: 20,
+              crossAxisSpacing: 10,
+              children: List.generate(10, (index) {
+                return TaskCategoryCard(
+                  isCompleted: false,
+                  categoryTitle: 'Database',
+                  remainingTask: 4,
+                );
+              }),
             ),
-            childAspectRatio: 1 / .8,
-            crossAxisCount: 2,
-            mainAxisSpacing: 20,
-            crossAxisSpacing: 10,
-            children: List.generate(10, (index) {
-              return TaskCategoryCard(
-                isCompleted: false,
-                categoryTitle: 'Database',
-                remainingTask: 4,
-              );
-            }),
           ),
-        ),
 
-        // TaskCategoryCard(
-        //   isCompleted: true,
-        //   categoryTitle: 'Database',
-        //   remainingTask: 4,
-        // ),
-        // Text('data'),
-      ],
-    );
+          // TaskCategoryCard(
+          //   isCompleted: true,
+          //   categoryTitle: 'Database',
+          //   remainingTask: 4,
+          // ),
+          // Text('data'),
+        ],
+      );
+    });
   }
 
   Widget _buildTopSection() {
