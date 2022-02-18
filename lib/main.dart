@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:todolist/configs/theme.config.dart';
-import 'package:todolist/modules/auth/signin/signin_screen.dart';
-import 'package:todolist/modules/auth/signup/signup_screen.dart';
+import 'package:todolist/modules/auth/presentation/signin/signin_screen.dart';
+import 'package:todolist/modules/auth/presentation/signup/signup_screen.dart';
 import 'package:todolist/modules/category/add_category/add_category_screen.dart';
 import 'package:todolist/modules/category/update_category/update_category_screen.dart';
 import 'package:todolist/modules/home/home_screen.dart';
