@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/components/main_appbar.dart';
 import 'package:todolist/configs/palette.config.dart';
+import 'package:todolist/modules/task/task_list/components/task_card.dart';
 
 class TaskListScreen extends StatelessWidget {
   const TaskListScreen({Key? key}) : super(key: key);
@@ -35,8 +36,50 @@ class TaskListScreen extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
-    return Center(
-      child: Text('Task List'),
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Database',
+            style: TextStyle(
+              fontSize: 24,
+              color: Palette.primary,
+            ),
+          ),
+          Text(
+            '12 Februari 2022',
+            style: TextStyle(
+              color: Palette.textPlaceholder,
+            ),
+          ),
+          SizedBox(height: 20),
+          Column(
+            children: List.generate(10, (index) {
+              return Column(
+                children: [
+                  TaskCard(
+                    description: 'description',
+                    taskTitle: 'taskTitle',
+                    dueDate: 'dueDate',
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              );
+            }),
+          )
+        ],
+        // children: List.generate(10, (index) {
+        //   return TaskCard(
+        //     description: 'description',
+        //     taskTitle: 'taskTitle',
+        //     dueDate: 'dueDate',
+        //   );
+        // }),
+      ),
     );
   }
 }
